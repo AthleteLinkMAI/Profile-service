@@ -1,0 +1,50 @@
+spring:
+  application:
+    name: athlete-link-profile-service
+  mvc:
+    servlet:
+      path: /api/v1
+  datasource:
+    username: ${POSTGRES_USER:admin}
+    password: ${POSTGRES_PASSWORD:admin}
+    url: ${POSTGRES_DB:jdbc:postgresql://localhost:5346/postgres}
+    driver-class-name: org.postgresql.Driver
+  jpa:
+    hibernate:
+      ddl-auto: validate
+      naming:
+        physical-strategy: org.hibernate.boot.model.naming.CamelCaseToUnderscoresNamingStrategy
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+    show-sql: false
+    open-in-view: false
+  kafka:
+    bootstrap-servers: ${KAFKA_BOOTSTRAP_SERVERS:localhost:9092}
+    consumer:
+      group-id: athlete-link-profile-service
+      key-deserializer: org.apache.kafka.common.serialization.UUIDDeserializer
+      value-deserializer: org.springframework.kafka.support.serializer.JacksonJsonDeserializer
+      properties:
+        spring.json.trusted.packages: team.anonyms.athletelink.profileservice.dto.*
+  flyway:
+    enabled: true
+    locations: classpath:database/migration
+
+app:
+  kafka:
+    topics:
+      users-to-create: users.to.create
+      users-to-update: users.to.update
+      users-to-delete: users.to.delete
+
+logging:
+  level:
+    root: INFO
+  file:
+    name: /logs/athletelink-profile-service.log
+  structured:
+    format:
+      file: ecs # Loki supports it
+    json:
+      exclude: ecs
