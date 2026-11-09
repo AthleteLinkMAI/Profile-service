@@ -28,6 +28,8 @@ CREATE UNIQUE INDEX unique_friend_request_pair on friend_request(
     GREATEST(user_id, friend_id)
 );
 
+CREATE INDEX friend_request_friend_id_idx ON friend_request(friend_id);
+
 CREATE TABLE friend(
     user_id   UUID NOT NULL REFERENCES users(id) ON DELETE CASCADE,
     friend_id UUID NOT NULL REFERENCES users(id) ON DELETE CASCADE,
@@ -39,3 +41,5 @@ CREATE UNIQUE INDEX unique_friend_pair on friend(
     LEAST(user_id, friend_id),
     GREATEST(user_id, friend_id)
 );
+
+CREATE INDEX friend_friend_id_idx ON friend(friend_id);

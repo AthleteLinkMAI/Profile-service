@@ -28,9 +28,16 @@ spring:
       properties:
         spring.deserializer.key.delegate.class: org.apache.kafka.common.serialization.UUIDDeserializer
         spring.deserializer.value.delegate.class: org.springframework.kafka.support.serializer.JacksonJsonDeserializer
+    producer:
+      key-serializer: org.apache.kafka.common.serialization.UUIDSerializer
+      value-serializer: org.springframework.kafka.support.serializer.JacksonJsonSerializer
   flyway:
     enabled: true
     locations: classpath:database/migration
+  data:
+    web:
+      pageable:
+        max-page-size: 20
 
 app:
   kafka:
@@ -38,6 +45,7 @@ app:
       users-to-create: users.to.create
       users-to-update: users.to.update
       users-to-delete: users.to.delete
+      friends-changes: friends.changes
 
 logging:
   level:
