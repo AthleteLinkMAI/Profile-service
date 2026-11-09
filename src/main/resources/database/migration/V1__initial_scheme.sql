@@ -1,5 +1,8 @@
-CREATE TABLE user(
+CREATE TYPE user_role AS ENUM('ADMIN', 'MODERATOR', 'USER');
+
+CREATE TABLE users(
     id                UUID        PRIMARY KEY,
+    role              user_role   NOT NULL,
     nickname          VARCHAR(30) NOT NULL UNIQUE,
     name              VARCHAR(30),
     surname           VARCHAR(30),
@@ -10,12 +13,12 @@ CREATE TABLE user(
 );
 
 CREATE TABLE ban(
-    user_id UUID PRIMARY KEY REFERENCES user(id)
+    user_id UUID PRIMARY KEY REFERENCES users(id)
 );
 
 CREATE TABLE friend_request(
-    user_id   UUID NOT NULL REFERENCES user(id),
-    friend_id UUID NOT NULL REFERENCES user(id),
+    user_id   UUID NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+    friend_id UUID NOT NULL REFERENCES users(id) ON DELETE CASCADE,
     PRIMARY KEY (user_id, friend_id),
     CHECK (user_id <> friend_id)
 );
@@ -26,8 +29,8 @@ CREATE UNIQUE INDEX unique_friend_request_pair on friend_request(
 );
 
 CREATE TABLE friend(
-    user_id   UUID NOT NULL REFERENCES user(id),
-    friend_id UUID NOT NULL REFERENCES user(id),
+    user_id   UUID NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+    friend_id UUID NOT NULL REFERENCES users(id) ON DELETE CASCADE,
     PRIMARY KEY (user_id, friend_id),
     CHECK (user_id <> friend_id)
 );
