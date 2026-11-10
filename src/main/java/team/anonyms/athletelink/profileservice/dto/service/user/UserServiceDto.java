@@ -13,6 +13,7 @@ public record UserServiceDto(
         String surname,
         String email,
         Boolean isVerified,
+        User.MessagePolicy messagePolicy,
         Integer age,
         LocalDate registrationDate
 ) {

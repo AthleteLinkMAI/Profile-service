@@ -1,15 +1,17 @@
 CREATE TYPE user_role AS ENUM('ADMIN', 'MODERATOR', 'USER');
+CREATE TYPE message_policy as ENUM('NO_ONE', 'ONLY_FRIENDS', 'EVERYBODY');
 
 CREATE TABLE users(
-    id                UUID        PRIMARY KEY,
-    role              user_role   NOT NULL,
-    nickname          VARCHAR(30) NOT NULL UNIQUE,
+    id                UUID           PRIMARY KEY,
+    role              user_role      NOT NULL,
+    nickname          VARCHAR(30)    NOT NULL UNIQUE,
     name              VARCHAR(30),
     surname           VARCHAR(30),
-    birthdate         DATE        NOT NULL,
-    email             VARCHAR     NOT NULL UNIQUE,
-    is_verified       BOOLEAN     NOT NULL DEFAULT FALSE,
-    registration_date DATE        NOT NULL
+    birthdate         DATE           NOT NULL,
+    email             VARCHAR        NOT NULL UNIQUE,
+    is_verified       BOOLEAN        NOT NULL DEFAULT FALSE,
+    message_policy    message_policy NOT NULL DEFAULT 'EVERYBODY',
+    registration_date DATE           NOT NULL
 );
 
 CREATE TABLE ban(

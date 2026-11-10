@@ -17,4 +17,13 @@ public class KafkaConfiguration {
                 .replicas(1)
                 .build();
     }
+
+    @Bean
+    public NewTopic profileUpdatesTopic(KafkaTopicsProperties topics) {
+        return TopicBuilder
+                .name(topics.profileUpdates())
+                .partitions(3)
+                .replicas(1)
+                .build();
+    }
 }

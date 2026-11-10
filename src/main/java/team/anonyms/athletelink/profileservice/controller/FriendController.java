@@ -37,7 +37,7 @@ public class FriendController {
                 .addKeyValue("pageable", pageable)
                 .log();
 
-        return userMapper.userPublicServiceToControllerDtoList(
+        return userMapper.userPublicServiceToControllerDtoPage(
                 friendService.getPaginatedFriendsByUserId(userToGetFriends, pageable)
         );
     }
@@ -73,7 +73,7 @@ public class FriendController {
                 .addKeyValue("pageable", pageable)
                 .log();
 
-        return userMapper.userPublicServiceToControllerDtoList(
+        return userMapper.userPublicServiceToControllerDtoPage(
                 friendService.getPaginatedIncomingFriendRequestsByUserId(userToGetFriendRequests, pageable)
         );
     }
@@ -93,7 +93,7 @@ public class FriendController {
                 .addKeyValue("pageable", pageable)
                 .log();
 
-        return userMapper.userPublicServiceToControllerDtoList(
+        return userMapper.userPublicServiceToControllerDtoPage(
                 friendService.getPaginatedOutcomingFriendRequestsByUserId(userToGetFriendRequests, pageable)
         );
     }

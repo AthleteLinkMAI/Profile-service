@@ -1,10 +1,7 @@
 package team.anonyms.athletelink.profileservice.entity;
 
 import jakarta.annotation.Nullable;
-import jakarta.persistence.Entity;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
@@ -23,11 +20,18 @@ import java.util.UUID;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@Table(name = "users")
 public class User {
     public enum UserRole {
         ADMIN,
         MODERATOR,
         USER
+    }
+
+    public enum MessagePolicy {
+        NO_ONE,
+        ONLY_FRIENDS,
+        EVERYBODY
     }
 
     @Setter(AccessLevel.NONE)
@@ -36,6 +40,7 @@ public class User {
 
     @JdbcTypeCode(SqlTypes.NAMED_ENUM)
     @Enumerated(EnumType.STRING)
+    @NotNull
     private UserRole role;
 
     @Size(max = 30)
@@ -57,6 +62,11 @@ public class User {
 
     @NotNull
     private Boolean isVerified;
+
+    @JdbcTypeCode(SqlTypes.NAMED_ENUM)
+    @Enumerated(EnumType.STRING)
+    @NotNull
+    private MessagePolicy messagePolicy;
 
     @Setter(AccessLevel.NONE)
     @CreationTimestamp

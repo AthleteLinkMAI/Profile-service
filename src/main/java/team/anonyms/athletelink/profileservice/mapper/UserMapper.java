@@ -11,14 +11,22 @@ import team.anonyms.athletelink.profileservice.dto.service.user.UserPublicServic
 import team.anonyms.athletelink.profileservice.dto.service.user.UserServiceDto;
 import team.anonyms.athletelink.profileservice.dto.service.user.UserToUpdateServiceDto;
 import team.anonyms.athletelink.profileservice.entity.User;
+import team.anonyms.athletelink.profileservice.service.UserService;
 
+import java.util.List;
 import java.util.UUID;
 
-@Mapper(componentModel = MappingConstants.ComponentModel.SPRING)
+@Mapper(componentModel = MappingConstants.ComponentModel.SPRING, imports = UserService.class)
 public interface UserMapper {
     UserControllerDto userServiceToControllerDto(UserServiceDto dto);
 
-    Page<UserPublicControllerDto> userPublicServiceToControllerDtoList(Page<UserPublicServiceDto> users);
+    UserPublicControllerDto userPublicServiceToControllerDto(UserPublicServiceDto dto);
+
+    List<UserPublicControllerDto> userPublicServiceToControllerDtoList(List<UserPublicServiceDto> users);
+
+    default Page<UserPublicControllerDto> userPublicServiceToControllerDtoPage(Page<UserPublicServiceDto> users) {
+        return users.map(this::userPublicServiceToControllerDto);
+    }
 
     UserToUpdateServiceDto userToUpdateControllerToServiceDto(UUID userId, UserToUpdateControllerDto dto);
 

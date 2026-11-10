@@ -4,6 +4,7 @@ import jakarta.annotation.Nullable;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
+import team.anonyms.athletelink.profileservice.entity.User;
 
 import java.time.LocalDate;
 
@@ -21,6 +22,9 @@ public record UserToUpdateControllerDto(
         String surname,
 
         @NotNull
-        LocalDate birthdate
+        LocalDate birthdate,
+
+        @NotNull
+        User.MessagePolicy messagePolicy
 ) {
 }

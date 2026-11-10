@@ -4,6 +4,7 @@ import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import team.anonyms.athletelink.profileservice.dto.service.kafka.ProfileUpdate;
 import team.anonyms.athletelink.profileservice.dto.service.kafka.UserToCreate;
 import team.anonyms.athletelink.profileservice.dto.service.kafka.UserToDelete;
 import team.anonyms.athletelink.profileservice.dto.service.kafka.UserToUpdate;
@@ -25,6 +26,7 @@ import java.util.UUID;
 @RequiredArgsConstructor
 @Service
 public class UserService {
+    private final KafkaProducerService kafkaProducerService;
     private final UserRepository userRepository;
     private final BanRepository banRepository;
 
@@ -45,6 +47,7 @@ public class UserService {
                 user.getSurname(),
                 user.getEmail(),
                 user.getIsVerified(),
+                user.getMessagePolicy(),
                 countUserAge(user),
                 user.getRegistrationDate()
         );
@@ -62,6 +65,8 @@ public class UserService {
                             user.getNickname(),
                             user.getName(),
                             user.getSurname(),
+                            user.getIsVerified(),
+                            user.getMessagePolicy(),
                             countUserAge(user),
                             user.getRegistrationDate()
                     )
@@ -87,6 +92,7 @@ public class UserService {
                         .email(userToCreate.email())
                         .isVerified(userToCreate.isVerified())
                         .registrationDate(userToCreate.registrationDate())
+                        .messagePolicy(User.MessagePolicy.EVERYBODY)
                         .build()
         );
     }
@@ -127,6 +133,14 @@ public class UserService {
         userToUpdate.setName(dto.name());
         userToUpdate.setSurname(dto.surname());
         userToUpdate.setBirthdate(dto.birthdate());
+
+        if (!dto.messagePolicy().equals(userToUpdate.getMessagePolicy())) {
+            userToUpdate.setMessagePolicy(dto.messagePolicy());
+
+            kafkaProducerService.sendProfileUpdate(
+                    new ProfileUpdate(userToUpdate.getId(), userToUpdate.getMessagePolicy())
+            );
+        }
 
         userRepository.save(userToUpdate);
     }

@@ -7,7 +7,7 @@ spring:
   datasource:
     username: ${POSTGRES_USER:admin}
     password: ${POSTGRES_PASSWORD:admin}
-    url: ${POSTGRES_DB:jdbc:postgresql://localhost:5346/postgres}
+    url: ${POSTGRES_DB:jdbc:postgresql://localhost:5436/postgres}
     driver-class-name: org.postgresql.Driver
   jpa:
     hibernate:
@@ -46,6 +46,7 @@ app:
       users-to-update: users.to.update
       users-to-delete: users.to.delete
       friends-changes: friends.changes
+      profile-updates: profile.updates
 
 logging:
   level:

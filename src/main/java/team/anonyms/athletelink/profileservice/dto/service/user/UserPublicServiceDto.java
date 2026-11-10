@@ -11,6 +11,8 @@ public record UserPublicServiceDto(
         String nickname,
         String name,
         String surname,
+        Boolean isVerified,
+        User.MessagePolicy messagePolicy,
         Integer age,
         LocalDate registrationDate
 ) {
